@@ -87,6 +87,40 @@ namespace SPOTIFY_APP.Controllers
             return View(tracks);
         }
 
+public IActionResult Charts()
+        {
+            ViewData["HideFooter"] = true;
+            return View();
+        }
+
+        public async Task<IActionResult> ArtistTopTracks(string artistId)
+        {
+            var accessToken = HttpContext.Session.GetString("SpotifyAccessToken");
+            if (string.IsNullOrEmpty(accessToken))
+                return RedirectToAction("Login");
+
+            var topTracks = await _spotifyService.GetArtistTopTracksAsync(accessToken, artistId);
+            var artistDetails = await _spotifyService.GetArtistDetailsAsync(accessToken, artistId);
+            var albumCounts = await _spotifyService.GetAlbumsByYearAsync(artistId);
+
+            // Extract track names and popularity data
+            var topTracksData = topTracks.Select(t => t.popularity).ToList();
+            var topTracksLabels = topTracks.Select(t => t.name).ToList();
+
+            // Pass the data to the view using ViewData or a view model
+            ViewData["TopTracksData"] = topTracksData;
+            ViewData["TopTracksLabels"] = topTracksLabels;
+            ViewData["ArtistName"] = artistDetails.name;
+            ViewData["Popularity"] = artistDetails.popularity;
+            ViewData["Followers"] = artistDetails.followers.total;
+            ViewData["HideFooter"] = true;
+
+            ViewData["Years"] = albumCounts.Keys.ToArray();
+            ViewData["AlbumCounts"] = albumCounts.Values.ToArray();
+
+
+            return View("ArtistTopTracks", topTracks);
+        }
 
 
 

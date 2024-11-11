@@ -157,6 +157,65 @@ namespace SPOTIFY_APP.Services
             return tracks;
         }
 
+public async Task<List<Track>> GetArtistTopTracksAsync(string accessToken, string artistId)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var response = await _httpClient.GetAsync($"https://api.spotify.com/v1/artists/{artistId}/top-tracks?market=US");
+            response.EnsureSuccessStatusCode();
+            var json = await response.Content.ReadAsStringAsync();
+            var topTracksData = System.Text.Json.JsonSerializer.Deserialize<ArtistTopTracks>(json);
+            return topTracksData.tracks;
+        }
 
+
+        public async Task<ArtistData> GetArtistDetailsAsync(string accessToken, string artistId)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var artistResponse = await _httpClient.GetAsync($"https://api.spotify.com/v1/artists/{artistId}");
+            artistResponse.EnsureSuccessStatusCode();
+            var json = await artistResponse.Content.ReadAsStringAsync();
+            return System.Text.Json.JsonSerializer.Deserialize<ArtistData>(json);
+        }
+
+public async Task<Dictionary<int, int>> GetAlbumsByYearAsync(string artistId)
+        {
+            var url = $"https://api.spotify.com/v1/artists/{artistId}/albums?limit=50";
+            var response = await _httpClient.GetAsync(url);
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Failed to fetch artist albums");
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+
+
+            ArtistAlbums myDeserializedClass = JsonConvert.DeserializeObject<ArtistAlbums>(jsonResponse);
+
+
+            // Count albums by year
+            var albumReleaseCounts = new Dictionary<int, int>();
+
+            foreach (var album in myDeserializedClass.items)
+            {
+                if (album.release_date == null) continue;
+
+                int releaseYear;
+                if (album.release_date_precision == "year")
+                {
+                    releaseYear = int.Parse(album.release_date);
+                }
+                else
+                {
+                    var releaseDate = DateTime.Parse(album.release_date);
+                    releaseYear = releaseDate.Year;
+                }
+
+                if (albumReleaseCounts.ContainsKey(releaseYear))
+                    albumReleaseCounts[releaseYear]++;
+                else
+                    albumReleaseCounts[releaseYear] = 1;
+            }
+
+            return albumReleaseCounts.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value); // Sort by year
+        }
     }
 }

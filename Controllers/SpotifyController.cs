@@ -172,6 +172,40 @@ namespace SPOTIFY_APP.Controllers
             return Redirect(_configuration["Spotify:RedirectSpotifyURI"]);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteTrack(string playlistId, string trackId)
+        {
+            var accessToken = HttpContext.Session.GetString("SpotifyAccessToken");
+            if (string.IsNullOrEmpty(accessToken))
+                return RedirectToAction("Login");
 
+            await _spotifyService.DeleteTrackAsync(accessToken, playlistId, trackId);
+            return RedirectToAction("PlaylistTracks", new { id = playlistId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeletePlaylist(string id)
+        {
+            var accessToken = HttpContext.Session.GetString("SpotifyAccessToken");
+            if (string.IsNullOrEmpty(accessToken))
+                return RedirectToAction("Login");
+
+            await _spotifyService.DeletePlaylistAsync(accessToken, id);
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public async Task<IActionResult> EditPlaylist(string id)
+        {
+            var accessToken = HttpContext.Session.GetString("SpotifyAccessToken");
+            if (string.IsNullOrEmpty(accessToken))
+                return RedirectToAction("Login");
+
+            // Fetch playlist details using the service
+            var playlist = await _spotifyService.GetPlaylistAsync(accessToken, id);
+            if (playlist == null)
+                return NotFound("Playlist not found.");
+
+            return View(playlist);
+        }
     }
 }

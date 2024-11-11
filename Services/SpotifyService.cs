@@ -256,6 +256,56 @@ namespace SPOTIFY_APP.Services
                 throw new Exception("Failed to create playlist.");
             }
         }
+        public async Task<Playlist> GetPlaylistAsync(string accessToken, string playlistId)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var response = await _httpClient.GetAsync($"https://api.spotify.com/v1/playlists/{playlistId}");
 
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Failed to fetch playlist details");
+
+            var json = await response.Content.ReadAsStringAsync();
+            var playlistJson = JsonDocument.Parse(json).RootElement;
+
+            return new Playlist
+            {
+                Id = playlistJson.GetProperty("id").GetString(),
+                Name = playlistJson.GetProperty("name").GetString(),
+                Description = playlistJson.GetProperty("description").GetString()
+            };
+        }
+
+
+
+
+
+        public async Task DeletePlaylistAsync(string accessToken, string playlistId)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var DeleteUrl = _configuration["Spotify:DeletePlaylist"];
+            var response = await _httpClient.DeleteAsync(DeleteUrl.Replace("{playlistId}", playlistId));
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Failed to delete playlist");
+        }
+
+        public async Task DeleteTrackAsync(string accessToken, string playlistId, string trackId)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var request = new HttpRequestMessage(HttpMethod.Delete, $"https://api.spotify.com/v1/playlists/{playlistId}/tracks")
+            {
+                Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(new
+                {
+                    tracks = new[]
+                    {
+                new { uri = $"spotify:track:{trackId}" }
+            }
+                }), System.Text.Encoding.UTF8, "application/json")
+            };
+
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Failed to delete track from playlist");
+        }
     }
 }

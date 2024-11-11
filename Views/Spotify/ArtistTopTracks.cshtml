@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+@{
+    var artistName = Html.Raw(Json.Serialize(ViewData["ArtistName"]));
+    var popularity = Html.Raw(Json.Serialize(ViewData["Popularity"]));
+    var followers = Html.Raw(Json.Serialize(ViewData["Followers"]));
+    var years = ViewData["Years"] as int[];
+    var albumCounts = ViewData["AlbumCounts"] as int[];
+}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Insights</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        .followers-count {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        #popularityGauge {
+            width: 250px !important;
+            height: 250px !important;
+        }
+
+        /* Styling for the label below the gauge chart */
+        .gauge-label {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .gauge-description {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #555;
+            max-width: 250px;
+            margin: 0 auto;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2>Top Tracks for @artistName</h2>
+
+        <div class="row mt-4">
+            <!-- Left Side: Bar Chart -->
+            <div class="col-md-6">
+                <canvas id="topTracksChart" style="max-width: 100%;"></canvas>
+            </div>
+
+
+            <!-- Right Side: Gauge Chart with fixed size -->
+            <div class="col-md-6 d-flex flex-column justify-content-center align-items-center">
+                <canvas id="popularityGauge"></canvas>
+                <div class="gauge-label">Artist Popularity</div> <!-- Label under the gauge -->
+                <div class="gauge-description">The popularity of the artist. The value will be between 0 and 100, with
+                    100 being the most popular. The artist's popularity is calculated from the popularity of all the
+                    artist's tracks.</div>
+
+            </div>
+        </div>
+
+
+
+        <!-- Followers Count -->
+        <div class="followers-count">
+            <strong>Followers:</strong> @followers
+        </div>
+
+
+        <div class="container mt-5">
+        <h2>Album Releases by Year</h2>
+        <canvas id="albumReleaseChart"></canvas>
+    </div>
+    </div>
+
+    <script>
+        const topTracksData = @Html.Raw(Json.Serialize(ViewData["TopTracksData"]));
+        const topTracksLabels = @Html.Raw(Json.Serialize(ViewData["TopTracksLabels"]));
+
+
+        new Chart(document.getElementById("topTracksChart"), {
+            type: "bar",
+            data: {
+                labels: topTracksLabels,
+                datasets: [{
+                    label: "Popularity",
+                    data: topTracksData,
+                    backgroundColor: "rgba(75, 192, 192, 0.6)",
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: "top"
+                    }
+                }
+            }
+        });
+
+        // Gauge Chart using Doughnut in Chart.js
+        new Chart(document.getElementById("popularityGauge"), {
+            type: "doughnut",
+            data: {
+                labels: ["Popularity", "Remaining"],
+                datasets: [{
+                    data: [@popularity, 100 - @popularity], // Replace 86 with the popularity value
+                    backgroundColor: ["#4CAF50", "#e0e0e0"], // Green for popularity, gray for remainder
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: false, // Disable responsiveness to fix the size
+                rotation: -90, // Start angle for the gauge effect
+                circumference: 180, // Semi-circle
+                cutout: "70%", // Inner cutout to make it look like a gauge
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        const years = @Html.Raw(Json.Serialize(years));
+        const albumCounts = @Html.Raw(Json.Serialize(albumCounts));
+
+        new Chart(document.getElementById("albumReleaseChart"), {
+            type: "line",
+            data: {
+                labels: years,
+                datasets: [{
+                    label: "Albums Released",
+                    data: albumCounts,
+                    backgroundColor: "rgba(75, 192, 192, 0.6)",
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    borderWidth: 1,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: "Number of Albums"
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Year"
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: "top"
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+@model List<SPOTIFY_APP.Models.Track>
+
+
+<h2>Tracks in Playlist</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Artist</th>
+            <th>Album</th>
+            <th style="text-align: center;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var track in Model)
+        {
+            <tr>
+                <td>@track.Name</td>
+                <td>
+                    <a asp-action="ArtistTopTracks" asp-controller="Spotify"
+                        asp-route-artistId="@track.ArtistId">@track.Artist</a>
+                </td>
+                <td>@track.AlbumName</td>
+
+
+                  <td style="text-align: center;">
+                    <form method="post" asp-action="DeleteTrack" asp-controller="Spotify"
+                        asp-route-playlistId="@ViewData["PlaylistId"]" asp-route-trackId="@track.Id">
+                        <button type="submit" class="btn text-danger">
+                            <div style="text-align: center;"> <i class="fas fa-trash"></i> </div>
+                        </button>
+                    </form>
+                </td>
+
+
+
+               
+
+
+            </tr>
+        }
+    </tbody>
+</table>

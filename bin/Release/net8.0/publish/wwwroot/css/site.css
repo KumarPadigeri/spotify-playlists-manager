@@ -1,0 +1,120 @@
+/* General body styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f6f9;
+  padding-top: 50px;
+  color: #343a40;
+}
+
+/* Headings */
+h2 {
+  color: #1b6ec2;
+  margin-bottom: 20px;
+}
+
+/* Links */
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th, td {
+  padding: 12px 15px;
+  border: 1px solid #dee2e6;
+  text-align: left;
+}
+
+/* Table headers with improved readability */
+th {
+  background-color: #f8f9fa;  /* Light background */
+  color: #343a40;  /* Dark text for better contrast */
+  font-weight: bold;
+}
+
+/* Table data rows */
+td {
+  background-color: #ffffff;
+  color: #212529;
+}
+
+/* Table hover effect */
+tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Button styles */
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.btn-primary:hover {
+  background-color: #155a9c;
+  border-color: #134e85;
+}
+
+/* Navbar brand logo */
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Navbar styling */
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+/* Footer styles */
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #343a40;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 14px;
+}
+
+/* Border styles for layout consistency */
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+/* Shadow for boxes */
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+/* Policy acceptance button */
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+  background-color: #1b6ec2;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+button.accept-policy:hover {
+  background-color: #155a9c;
+}

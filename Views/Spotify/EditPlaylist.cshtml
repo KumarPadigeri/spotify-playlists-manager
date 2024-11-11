@@ -1,0 +1,16 @@
+﻿@model SPOTIFY_APP.Models.Playlist
+
+<h2>Edit Playlist</h2>
+
+<form method="post" asp-action="EditPlaylist" asp-route-id="@Model.Id">
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" required />
+    </div>
+    <div class="form-group">
+        <label for="Description">Description</label>
+        <textarea class="form-control" id="Description" name="Description" required>@Model.Description</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

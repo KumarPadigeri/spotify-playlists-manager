@@ -1,0 +1,59 @@
+﻿@model List<SPOTIFY_APP.Models.Playlist>
+
+
+@{
+    var accountHolder = Html.Raw(Json.Serialize(ViewData["AccountHolder"]));
+     
+}
+<h2>Hello @accountHolder</h2>
+<a asp-action="CreatePlaylist" class="btn btn-success mb-3">Create New Playlist</a>
+
+<style>
+    th{text-align: center;}
+</style>
+
+<table class="table">
+    <thead >
+        <tr style="text-align: center;">
+
+            <th style="text-align: left;">Name</th>
+            <th style="text-align: left;">Description</th>
+            
+            <th>Tracks</th>
+    
+            <th style="min-width: 150px; text-align: center;">View Tracks</th>
+            <th>Edit</th>
+            <th>Delete Playlist</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var playlist in Model)
+        {
+            <tr>
+
+                <td>@playlist.Name</td>
+                <td>@playlist.Description</td>
+                <td style="text-align: center;">
+                    @playlist.Tracks
+                </td>
+                <td style="text-align: center;">
+                    <a asp-action="PlaylistTracks" asp-route-id="@playlist.Id" class="btn btn-primary"
+                        title="View Tracks">View Tracks</a>
+                </td>
+                <td style="text-align: center;"> 
+    <a asp-action="EditPlaylist" asp-route-id="@playlist.Id" class="btn btn-secondary" title="Edit Playlist">
+  <i class="fa-solid fa-pencil"></i>
+    </a>
+</td>
+                <td style="text-align: center;">
+                    <form method="post" asp-action="DeletePlaylist" asp-controller="Spotify" asp-route-id="@playlist.Id">
+                        <button type="submit" class="btn text-danger" title="Delete Playlist">
+                            <div style="text-align: center;"> <i class="fa-solid fa-trash"></i></div>
+                        </button>
+
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

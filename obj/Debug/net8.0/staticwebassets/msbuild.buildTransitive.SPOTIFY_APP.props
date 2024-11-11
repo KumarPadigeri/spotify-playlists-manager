@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../buildMultiTargeting/SPOTIFY_APP.props" />
+</Project>

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "HQNBaoH/IT8=",
+  "success": true,
+  "projectFilePath": "/Users/kumarpadigeri/Downloads/DIS Project/SPOTIFY_APP/SPOTIFY_APP.csproj",
+  "expectedPackageFiles": [
+    "/Users/kumarpadigeri/.nuget/packages/newtonsoft.json/13.0.3/newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

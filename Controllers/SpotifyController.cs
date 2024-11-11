@@ -87,7 +87,7 @@ namespace SPOTIFY_APP.Controllers
             return View(tracks);
         }
 
-public IActionResult Charts()
+        public IActionResult Charts()
         {
             ViewData["HideFooter"] = true;
             return View();
@@ -122,6 +122,55 @@ public IActionResult Charts()
             return View("ArtistTopTracks", topTracks);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditPlaylist(string id, string name, string description)
+        {
+            var accessToken = HttpContext.Session.GetString("SpotifyAccessToken");
+            if (string.IsNullOrEmpty(accessToken))
+                return RedirectToAction("Login");
+
+            await _spotifyService.UpdatePlaylistAsync(accessToken, id, name, description);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult CreatePlaylist()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreatePlaylist(string name, string description, bool isPublic)
+        {
+            var accessToken = HttpContext.Session.GetString("SpotifyAccessToken");
+            if (string.IsNullOrEmpty(accessToken))
+                return RedirectToAction("Login");
+
+            await _spotifyService.CreatePlaylistAsync(accessToken, name, description, isPublic);
+            return RedirectToAction("Index");
+        }
+
+
+        // Privacy action for Privacy page
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
+
+        public IActionResult Logout()
+        {
+            // Clear the session to remove local user data, including tokens
+            HttpContext.Session.Clear();
+
+            // Redirect the user to Spotify's main page to log them out
+            // This opens Spotify’s homepage, where users can log out if needed
+            return Redirect(_configuration["Spotify:RedirectSpotifyURI"]);
+        }
 
 
     }

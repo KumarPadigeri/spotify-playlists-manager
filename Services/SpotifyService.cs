@@ -104,7 +104,7 @@ namespace SPOTIFY_APP.Services
             // Get the current user's Spotify ID
             var userResponse = await _httpClient.GetAsync("https://api.spotify.com/v1/me");
             if (!userResponse.IsSuccessStatusCode)
-            throw new Exception("Failed to retrieve user information.");
+                throw new Exception("Failed to retrieve user information.");
 
             var json = await userResponse.Content.ReadAsStringAsync();
             var res = System.Text.Json.JsonSerializer.Deserialize<Item>(json);
@@ -120,7 +120,7 @@ namespace SPOTIFY_APP.Services
             // Get the current user's Spotify ID
             var userResponse = await _httpClient.GetAsync("https://api.spotify.com/v1/me");
             if (!userResponse.IsSuccessStatusCode)
-            throw new Exception("Failed to retrieve user information.");
+                throw new Exception("Failed to retrieve user information.");
 
             var userJson = await userResponse.Content.ReadAsStringAsync();
             return JsonDocument.Parse(userJson).RootElement.GetProperty("display_name").GetString();
@@ -136,7 +136,7 @@ namespace SPOTIFY_APP.Services
             var response = await _httpClient.GetAsync($"https://api.spotify.com/v1/playlists/{playlistId}/tracks");
 
             if (!response.IsSuccessStatusCode)
-            throw new Exception("Failed to fetch playlist tracks");
+                throw new Exception("Failed to fetch playlist tracks");
 
             var json = await response.Content.ReadAsStringAsync();
             Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(json);
@@ -157,7 +157,7 @@ namespace SPOTIFY_APP.Services
             return tracks;
         }
 
-public async Task<List<Track>> GetArtistTopTracksAsync(string accessToken, string artistId)
+        public async Task<List<Track>> GetArtistTopTracksAsync(string accessToken, string artistId)
         {
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
             var response = await _httpClient.GetAsync($"https://api.spotify.com/v1/artists/{artistId}/top-tracks?market=US");
@@ -177,7 +177,7 @@ public async Task<List<Track>> GetArtistTopTracksAsync(string accessToken, strin
             return System.Text.Json.JsonSerializer.Deserialize<ArtistData>(json);
         }
 
-public async Task<Dictionary<int, int>> GetAlbumsByYearAsync(string artistId)
+        public async Task<Dictionary<int, int>> GetAlbumsByYearAsync(string artistId)
         {
             var url = $"https://api.spotify.com/v1/artists/{artistId}/albums?limit=50";
             var response = await _httpClient.GetAsync(url);
@@ -217,5 +217,45 @@ public async Task<Dictionary<int, int>> GetAlbumsByYearAsync(string artistId)
 
             return albumReleaseCounts.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value); // Sort by year
         }
+
+        public async Task UpdatePlaylistAsync(string accessToken, string playlistId, string name, string description)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var requestContent = new StringContent(System.Text.Json.JsonSerializer.Serialize(new
+            {
+                name = name,
+                description = description
+            }), System.Text.Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync($"https://api.spotify.com/v1/playlists/{playlistId}", requestContent);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("Failed to update playlist");
+            }
+        }
+        public async Task CreatePlaylistAsync(string accessToken, string name, string description, bool isPublic)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var userId = GetUserProfileAsync(accessToken);
+
+            // Create the playlist for the user
+            var requestBody = new
+            {
+                name = name,
+                description = description,
+                @public = isPublic
+            };
+
+            var requestContent = new StringContent(System.Text.Json.JsonSerializer.Serialize(requestBody), System.Text.Encoding.UTF8, "application/json");
+
+            var createResponse = await _httpClient.PostAsync($"https://api.spotify.com/v1/users/{userId.Result}/playlists", requestContent);
+            if (!createResponse.IsSuccessStatusCode)
+            {
+                throw new Exception("Failed to create playlist.");
+            }
+        }
+
     }
 }

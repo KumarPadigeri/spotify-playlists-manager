@@ -1,0 +1,88 @@
+@{
+    ViewData["Title"] = "About Us";
+}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">About Us</h2>
+
+    <!-- Repository Link -->
+    <p class="text-center">
+        <a href="https://github.com/KumarPadigeri/spotify-playlists-manager" target="_blank">View Project Repository</a>
+    </p>
+
+    <!-- Project Description -->
+   <p class="text-center mb-5" style="text-align: justify;">
+        Our Spotify Playlist Manager project is designed to enhance your music experience by providing an intuitive interface to manage and explore your Spotify playlists. With features like playlist viewing, creation, and customization, you can easily edit your playlists, remove tracks, and organize your music. The application offers detailed insights into each track, including artist and album information, along with interactive charts and visualizations, such as popularity gauges, genre distributions, and release history. By integrating Spotify’s API, the platform provides real-time updates and seamless access to Spotify’s latest features, creating a personalized, data-driven way to explore and enjoy your favorite music.
+    </p>
+
+ <!-- Technical Details Section -->
+    <div class="container mt-5">
+        <h3 class="text-center mb-4"  style="color:#1b6ec2;">Technical Details</h3>
+        <ul>
+            <li><strong>Spotify API Integration</strong>: Our application integrates with Spotify's API, allowing users to authenticate, retrieve playlists, and view detailed track and artist information in real-time.</li>
+            <li><strong>Data Visualizations</strong>: Leveraging Chart.js, we implemented dynamic charts that display artist popularity, track popularity, album release history, and other metrics, enhancing user insights.</li>
+            <li><strong>Playlist Management</strong>: Users can view, create, and edit playlists with intuitive UI features built using Bootstrap, making playlist management seamless and user-friendly.</li>
+            <li><strong>Authentication and Security</strong>: OAuth 2.0 is used for secure user authentication with Spotify, ensuring user data privacy and secure access to their Spotify account.</li>
+            <li><strong>Backend and Frontend Stack</strong>: Built with ASP.NET MVC for backend processing and Bootstrap for frontend styling, providing a responsive and robust application structure.</li>
+            <li><strong>Git Version Control</strong>: All team members collaborated via Git for version control, with detailed commit history available in the repository, documenting each member's contributions.</li>
+        </ul>
+    <!-- Team Members Section -->
+    <div class="container">
+          <h3 class="text-center mb-4" style="color:#1b6ec2;">Team Members</h3>
+        <!-- Team Member 1 -->
+        <div class="row align-items-center mb-4">
+            <div class="col-md-2 text-center">
+                <img src="~/images/kumar.jpeg" alt="Kumar Swamy Padigeri" class="img-fluid rounded-circle" width="150" height="150">
+            </div>
+            <div class="col-md-10">
+                <h5>Kumar Padigeri</h5>
+                <p style="text-align: justify;">I have four years of experience in Java and am currently pursuing a master’s degree in Business Analytics and Information Systems at the University of South Florida. Alongside my studies, I'm gaining practical industry experience through my internship at Tenex Software Solutions as a .NET Developer. I built an index page that displays all playlists for a specific user, giving them easy access to manage their collections. I added functionality to let users edit playlist names and descriptions directly on the page, making it straightforward to customize and organize their playlists without needing extra steps. This feature improves the user experience by simplifying playlist management and enabling a more personalized interaction with their content.</p>
+            </div>
+        </div>
+
+        <!-- Team Member 2 -->
+        <div class="row align-items-center mb-4">
+            <div class="col-md-2 text-center">
+                <img src="~/images/sunil.jpg" alt="Sunil Yanagandula" class="img-fluid rounded-circle" width="150" height="150">
+            </div>
+            <div class="col-md-10">
+                <h5>Sunil Yanagandula</h5>
+                <p style="text-align: justify;">I have five years of experience as a Data Analyst and am currently pursuing a master’s degree in Business Analytics and Information Systems at the University of South Florida. In addition, I am gaining hands-on experience through my internship at Pranatree. I developed a series of charts to provide a comprehensive visual representation of an artist’s key metrics. The charts include the artist’s top 10 tracks, showcasing track popularity and enabling a quick comparison of listener preferences. I also added a chart to display the artist's follower count, offering insights into fan base growth. Additionally, I implemented a gauge chart to visualize the artist’s popularity score, highlighting their overall appeal relative to other artists. Lastly, I created a line chart that tracks album releases over the years, revealing trends in the artist’s productivity and evolution over time.</p>
+            </div>
+        </div>
+
+        <!-- Team Member 3 -->
+        <div class="row align-items-center mb-4">
+            <div class="col-md-2 text-center">
+                <img src="~/images/nikhil.jpeg" alt="Sai Nikhil Nellutla" class="img-fluid rounded-circle" width="150" height="150">
+            </div>
+            <div class="col-md-10">
+                <h5>Sai Nikhil Nellutla</h5>
+                <p style="text-align: justify;">I have two years of experience as an full stack data engineer and am currently pursuing a master’s degree in Business Analytics and Information Systems at the University of South Florida. I developed dedicated pages for viewing and editing individual tracks within playlists, making track management more intuitive and user-friendly. The view page displays essential track information, allowing users to explore track details at a glance. The edit page provides functionality for modifying track attributes, enabling users to customize track details efficiently. These pages streamline playlist management by offering clear, accessible tools for interacting with each track directly.</p>
+            </div>
+        </div>
+
+        <!-- Team Member 4 -->
+        <div class="row align-items-center mb-4">
+            <div class="col-md-2 text-center">
+                <img src="~/images/saikiran.jpeg" alt="Sai Kiran Pemmasani Murali" class="img-fluid rounded-circle" width="150" height="150">
+            </div>
+            <div class="col-md-10">
+                <h5>Sai Kiran Pemmasani Murali</h5>
+                <p style="text-align: justify;">I designed an About Us page that provides an overview of the project and showcases each team member’s role and contributions. This page includes a detailed section for each member, highlighting their specific input to the project. I also incorporated visuals of the data model, giving insight into the project's structure and how data flows within it. Additionally, I included Git log images, which demonstrate the version control history and document the collaborative efforts and development process. This page offers a comprehensive view of the project’s team, architecture, and progress.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Model and Contributions Images -->
+    <div class="row mt-5">
+        <div class="col-md-6 text-center" style="color:#1b6ec2;">
+            <h5>Data Model</h5>
+            <img src="~/images/data-model.png" alt="Data Model" class="img-fluid">
+        </div>
+        <div class="col-md-6 text-center" style="color:#1b6ec2;">
+            <h5>Contributions</h5>
+            <img src="~/images/contributions.png" alt="Contributions" class="img-fluid">
+        </div>
+    </div>
+    <br/><br/><br/>
+</div>
